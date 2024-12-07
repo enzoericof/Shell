@@ -1,100 +1,67 @@
+shell.py
 import os
 import sys
 import logging
 from commands.file_ops import copiar, mover, renombrar
+from commands.dir_ops import listar, crear_directorio, ir
+from commands.user_ops import agregar_usuario, cambiar_contrasena
+from commands.service_ops import iniciar_servicio, detener_servicio
 from utils import log_action, log_error
 
-def cambiar_directorio(ruta):
-    """
-    Cambia el directorio de trabajo actual.
-    """
-    try:
-        os.chdir(ruta)
-        log_action(f"Directorio cambiado a {ruta}")
-    except Exception as e:
-        log_error(f"Error al cambiar directorio: {e}")
+LOG_DIR = "/root/Shell-main/LFS-Shell/logs"
 
-def agregar_usuario():
-    """
-    Agrega un nuevo usuario al sistema.
-    """
-    try:
-        username = input("Ingrese el nombre del usuario: ")
-        os.system(f"useradd {username}")
-        log_action(f"Usuario {username} agregado al sistema")
-    except Exception as e:
-        log_error(f"Error al agregar usuario: {e}")
-
-def cambiar_contrasena():
-    """
-    Cambia la contrasena de un usuario.
-    """
-    try:
-        username = input("Ingrese el nombre del usuario: ")
-        os.system(f"passwd {username}")
-        log_action(f"Contrasena cambiada para el usuario {username}")
-    except Exception as e:
-        log_error(f"Error al cambiar contrasena: {e}")
-
-def iniciar_servicio(servicio):
-    """
-    Inicia un servicio del sistema.
-    """
-    try:
-        os.system(f"systemctl start {servicio}")
-        log_action(f"Servicio {servicio} iniciado")
-    except Exception as e:
-        log_error(f"Error al iniciar servicio {servicio}: {e}")
-
-def detener_servicio(servicio):
-    """
-    Detiene un servicio del sistema.
-    """
-    try:
-        os.system(f"systemctl stop {servicio}")
-        log_action(f"Servicio {servicio} detenido")
-    except Exception as e:
-        log_error(f"Error al detener servicio {servicio}: {e}")
+# Configurar logging
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
+logging.basicConfig(
+    filename=f"{LOG_DIR}/shell.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 def main():
-    """
-    Función principal que procesa los comandos del usuario.
-    """
+    print("Bienvenido a LFS Shell")
     while True:
         try:
-            command = input("Ingrese un comando: ")
-            if command in ["salir", "exit"]:
-                log_action("Sesión terminada por el usuario")
+            command = input("shell> ").strip()
+            if command.lower() in ["exit", "quit"]:
+                log_action("Usuario salió de la sesión.")
+                print("Adiós!")
                 break
             elif command.startswith("copiar"):
-                _, origen, destino = command.split()
-                copiar(origen, destino)
+                _, src, dest = command.split()
+                copiar(src, dest)
             elif command.startswith("mover"):
-                _, origen, destino = command.split()
-                mover(origen, destino)
+                _, src, dest = command.split()
+                mover(src, dest)
             elif command.startswith("renombrar"):
-                _, origen, nuevo_nombre = command.split()
-                renombrar(origen, nuevo_nombre)
-            elif command.startswith("cd"):
-                _, ruta = command.split()
-                cambiar_directorio(ruta)
+                _, old_name, new_name = command.split()
+                renombrar(old_name, new_name)
+            elif command.startswith("listar"):
+                _, path = command.split()
+                listar(path)
+            elif command.startswith("creardir"):
+                _, path = command.split()
+                crear_directorio(path)
+            elif command.startswith("ir"):
+                _, path = command.split()
+                ir(path)
             elif command.startswith("permisos"):
-                _, modo, ruta = command.split()
-                os.chmod(ruta, int(modo, 8))
-                log_action(f"Cambiados permisos de {ruta} a {modo}")
+                _, mode, path = command.split()
+                os.chmod(path, int(mode, 8))
+                log_action(f"Cambiados permisos de {path} a {mode}")
             elif command.startswith("usuario"):
                 agregar_usuario()
-            elif command.startswith("contrasena"):
+            elif command.startswith("contraseña"):
                 cambiar_contrasena()
             elif command.startswith("servicio"):
-                _, accion, servicio = command.split()
-                if accion == "iniciar":
-                    iniciar_servicio(servicio)
-                elif accion == "detener":
-                    detener_servicio(servicio)
+                _, action, service_name = command.split()
+                if action == "iniciar":
+                    iniciar_servicio(service_name)
+                elif action == "detener":
+                    detener_servicio(service_name)
             else:
                 os.system(command)
         except Exception as e:
             log_error(f"Error al procesar el comando: {str(e)}")
-
 if _name_ == "_main_":
     main()
