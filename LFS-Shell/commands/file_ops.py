@@ -8,9 +8,13 @@ def copiar(origen, destino):
     """
     try:
         shutil.copy2(origen, destino)
-        log_action(f"Copiado archivo de {origen} a {destino}")
+        mensaje = f"Se copió archivo de {origen} a {destino}"
+        print(mensaje)
+        log_action(mensaje)
     except Exception as e:
-        log_error(f"Error al copiar archivo: {e}")
+        mensaje = f"Error al copiar archivo: {e}"
+        print(mensaje)
+        log_error(mensaje)
 
 def mover(origen, destino):
     """
@@ -18,9 +22,13 @@ def mover(origen, destino):
     """
     try:
         shutil.move(origen, destino)
-        log_action(f"Movido archivo de {origen} a {destino}")
+        mensaje = f"Se movió el archivo de {origen} a {destino}"
+        print(mensaje)
+        log_action(mensaje)
     except Exception as e:
-        log_error(f"Error al mover archivo: {e}")
+        mensaje = f"Error al mover archivo: {e}"
+        print(mensaje)
+        log_error(mensaje)
 
 def renombrar(origen, nuevo_nombre):
     """
@@ -28,6 +36,10 @@ def renombrar(origen, nuevo_nombre):
     """
     try:
         os.rename(origen, nuevo_nombre)
-        log_action(f"Renombrado {origen} a {nuevo_nombre}")
+        mensaje = f"Se renombró {origen} a {nuevo_nombre}"
+        print(mensaje)
+        log_action(mensaje)
     except Exception as e:
-        log_error(f"Error al renombrar: {e}")
+        mensaje = f"Error al renombrar: {e}"
+        print(mensaje)
+        log_error(mensaje)
