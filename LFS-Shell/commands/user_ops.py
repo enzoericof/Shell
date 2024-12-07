@@ -3,6 +3,8 @@ import subprocess
 import os
 from utils import log_action, log_error
 
+USER_DATA_FILE = "/root/Shell-main/LFS-Shell/users/user_data.json"
+
 def cargar_datos_usuarios():
     """Carga los datos de los usuarios desde un archivo JSON."""
     if not os.path.exists(USER_DATA_FILE):
