@@ -3,48 +3,53 @@ import subprocess
 import os
 from utils import log_action, log_error
 
+def cargar_datos_usuarios():
+    """Carga los datos de los usuarios desde un archivo JSON."""
+    if not os.path.exists(USER_DATA_FILE):
+        return {}
+    with open(USER_DATA_FILE, "r") as file:
+        return json.load(file)
+
+def guardar_datos_usuarios(data):
+    """Guarda los datos de los usuarios en un archivo JSON."""
+    os.makedirs(os.path.dirname(USER_DATA_FILE), exist_ok=True)
+    with open(USER_DATA_FILE, "w") as file:
+        json.dump(data, file, indent=4)
+
 def agregar_usuario(nombre, contrasena, verificar_contrasena, datos_personales, ips_permitidas):
     """
     Agrega un usuario al sistema con una contraseña, datos adicionales y doble verificación de contraseña.
     Registra también las IPs permitidas.
     """
     try:
-        # Verificar contraseñas
         if contrasena != verificar_contrasena:
             mensaje = "Error: Las contraseñas no coinciden."
             print(mensaje)
             log_error(mensaje)
             return
 
-        # Crear usuario en el sistema
-        subprocess.run(['useradd', '-m', nombre], check=True)
+        # Cargar datos actuales
+        usuarios = cargar_datos_usuarios()
+        if nombre in usuarios:
+            mensaje = f"Error: El usuario {nombre} ya existe."
+            print(mensaje)
+            log_error(mensaje)
+            return
 
-        # Configurar contraseña
+        # Guardar datos
         hashed_passwd = crypt.crypt(contrasena)
-        subprocess.run(['usermod', '-p', hashed_passwd, nombre], check=True)
+        usuarios[nombre] = {
+            "password": hashed_passwd,
+            "datos_personales": datos_personales,
+            "horarios_permitidos": [],
+            "ips_permitidas": ips_permitidas
+        }
+        guardar_datos_usuarios(usuarios)
 
-        # Crear directorios y archivos si no existen
-        user_data_file = "/root/Shell-main/LFS-Shell/users/user_data.txt"
-        ips_file = f"/root/Shell-main/{nombre}_ips.txt"
-
-        os.makedirs(os.path.dirname(user_data_file), exist_ok=True)
-
-        # Guardar datos personales
-        with open(user_data_file, "a") as file:
-            file.write(f"Usuario: {nombre}\nDatos personales: {datos_personales}\n\n")
-
-        # Guardar IPs permitidas
-        with open(ips_file, "w") as file:
-            file.write("\n".join(ips_permitidas) + "\n")
-
-        mensaje = f"Usuario {nombre} agregado con éxito. IPs permitidas registradas."
+        mensaje = f"Usuario {nombre} agregado con éxito."
         print(mensaje)
         log_action(f"{mensaje} Datos: {datos_personales}, IPs: {ips_permitidas}")
 
-    except subprocess.CalledProcessError as e:
-        mensaje = f"Error al agregar usuario {nombre}: {e}"
-        print(mensaje)
-        log_error(mensaje)
     except Exception as e:
         mensaje = f"Error inesperado al agregar usuario {nombre}: {e}"
         print(mensaje)
@@ -55,34 +60,39 @@ def cambiar_contrasena(usuario, contrasena_actual, nueva_contrasena, verificar_n
     Cambia la contraseña de un usuario con doble verificación y validación de contraseña actual.
     """
     try:
-        # Verificar contraseñas nuevas
         if nueva_contrasena != verificar_nueva_contrasena:
             mensaje = "Error: Las nuevas contraseñas no coinciden."
             print(mensaje)
             log_error(mensaje)
             return
 
-        # Verificar contraseña actual (simulado para este entorno)
-        resultado = subprocess.run(['passwd', '--status', usuario], capture_output=True, text=True)
-        if resultado.returncode != 0 or contrasena_actual not in resultado.stdout:
-            mensaje = "Error: Contraseña actual incorrecta o usuario no encontrado."
+        # Cargar datos actuales
+        usuarios = cargar_datos_usuarios()
+        if usuario not in usuarios:
+            mensaje = f"Error: El usuario {usuario} no existe."
+            print(mensaje)
+            log_error(mensaje)
+            return
+
+        # Verificar contraseña actual
+        hashed_actual = crypt.crypt(contrasena_actual)
+        if usuarios[usuario]["password"] != hashed_actual:
+            mensaje = "Error: Contraseña actual incorrecta."
             print(mensaje)
             log_error(mensaje)
             return
 
         # Cambiar la contraseña
-        hashed_passwd = crypt.crypt(nueva_contrasena)
-        subprocess.run(['usermod', '-p', hashed_passwd, usuario], check=True)
+        hashed_nueva = crypt.crypt(nueva_contrasena)
+        usuarios[usuario]["password"] = hashed_nueva
+        guardar_datos_usuarios(usuarios)
 
         mensaje = f"Contraseña cambiada con éxito para el usuario {usuario}."
         print(mensaje)
         log_action(mensaje)
 
-    except subprocess.CalledProcessError as e:
-        mensaje = f"Error al cambiar la contraseña para {usuario}: {e}"
-        print(mensaje)
-        log_error(mensaje)
     except Exception as e:
         mensaje = f"Error inesperado al cambiar la contraseña para {usuario}: {e}"
         print(mensaje)
         log_error(mensaje)
+                    
