@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 
 # Directorios de logs
-LOG_DIR = "Shell/Shell/LFS-Shell/logs"
+LOG_DIR = "/root/Shell-main/LFS-Shell/logs"
 LOG_ERROR = f"{LOG_DIR}/sistema_error.log"
 LOG_HORARIOS = f"{LOG_DIR}/usuario_horarios_log.log"
 LOG_TRANSFERENCIAS = f"{LOG_DIR}/shell_transferencias.log"
