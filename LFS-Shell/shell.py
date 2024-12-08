@@ -1,8 +1,7 @@
-shell.py
 import os
 import sys
 import logging
-import json
+import subprocess
 from commands.file_ops import copiar, mover, renombrar
 from commands.dir_ops import listar, crear_directorio, ir
 from commands.user_ops import agregar_usuario, cambiar_contrasena
@@ -19,6 +18,27 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
+
+def solicitar_ips():
+    """Solicitar al usuario las IPs permitidas."""
+    ips = []
+    print("Ingrese las IPs permitidas para este usuario. Escriba 'done' para finalizar:")
+    while True:
+        ip = input("IP: ").strip()
+        if ip.lower() == 'done':
+            break
+        ips.append(ip)
+    return ips
+
+def launch_vim(file_name):
+    """Abrir un archivo de texto en vim."""
+    try:
+        subprocess.run(["vim", file_name])
+        log_action(f"vim lanzado para editar el archivo {file_name}")
+    except FileNotFoundError:
+        log_error("vim no está instalado en el sistema.")
+        print("Error: 'vim' no está instalado en tu sistema.")
+
 def main():
     print("Bienvenido a LFS Shell")
     while True:
@@ -61,23 +81,27 @@ def main():
                 except Exception as e:
                     log_error(f"Error al agregar usuario: {str(e)}")
             elif command.startswith("contraseña"):
-                 try:
+                try:
                     usuario = input("Nombre de usuario: ").strip()
                     contrasena_actual = input("Contraseña actual: ").strip()
                     nueva_contrasena = input("Nueva contraseña: ").strip()
                     verificar_nueva_contrasena = input("Verificar nueva contraseña: ").strip()
                     cambiar_contrasena(usuario, contrasena_actual, nueva_contrasena, verificar_nueva_contrasena)
                 except Exception as e:
-                     log_error(f"Error al cambiar contraseña: {str(e)}")
+                    log_error(f"Error al cambiar contraseña: {str(e)}")
             elif command.startswith("servicio"):
                 _, action, service_name = command.split()
                 if action == "iniciar":
                     iniciar_servicio(service_name)
                 elif action == "detener":
                     detener_servicio(service_name)
+            elif command.startswith("vim"):
+                _, file_name = command.split()
+                launch_vim(file_name)
             else:
                 os.system(command)
         except Exception as e:
             log_error(f"Error al procesar el comando: {str(e)}")
+
 if __name__ == "__main__":
     main()
