@@ -1,0 +1,24 @@
+2024-12-06 23:38:25 - ERROR - Error al copiar archivo: [Errno 2] No such file or directory: 'prueba200.txt'
+2024-12-07 00:25:37 - ERROR - Error al procesar el comando: name 'list_dir' is not defined
+2024-12-07 00:26:17 - ERROR - Error al procesar el comando: name 'list_dir' is not defined
+2024-12-07 00:27:59 - ERROR - Error al procesar el comando: name 'create_dir' is not defined
+2024-12-07 00:28:36 - ERROR - Error al procesar el comando: name 'change_dir' is not defined
+2024-12-07 00:28:47 - ERROR - Error al procesar el comando: name 'list_dir' is not defined
+2024-12-07 00:30:11 - ERROR - Error al procesar el comando: name 'create_dir' is not defined
+2024-12-07 00:31:55 - ERROR - Error al procesar el comando: name 'create_dir' is not defined
+2024-12-07 00:33:59 - ERROR - Error al procesar el comando: name 'move_file' is not defined
+2024-12-07 00:52:58 - ERROR - Error al listar directorio root/Shell-main/LFS-Shell/commands: [Errno 2] No such file or directory: 'root/Shell-main/LFS-Shell/commands'
+2024-12-07 01:18:27 - ERROR - Error al procesar el comando: name 'ir' is not defined
+2024-12-07 01:18:54 - ERROR - Error al procesar el comando: name 'ir' is not defined
+2024-12-07 01:20:46 - ERROR - Error al procesar el comando: name 'ir' is not defined
+2024-12-07 14:16:15 - ERROR - Error al procesar el comando: agregar_usuario() missing 5 required positional arguments: 'nombre', 'contrasena', 'verificar_contrasena', 'datos_personales', and 'ips_permitidas'
+2024-12-07 14:37:40 - ERROR - Error: El directorio 'user_data.txt' no existe.
+2024-12-07 14:39:29 - ERROR - Error: Las contraseñas no coinciden.
+2024-12-07 14:41:06 - ERROR - Error: Contraseña actual incorrecta o usuario no encontrado.
+2024-12-07 19:55:51 - ERROR - Error inesperado al agregar usuario Enzo: name 'json' is not defined
+2024-12-07 20:17:22 - ERROR - Error inesperado al agregar usuario Enzo: name 'json' is not defined
+2024-12-07 20:21:04 - ERROR - Error inesperado al agregar usuario Enzo: Expecting value: line 1 column 1 (char 0)
+2024-12-07 20:22:13 - ERROR - Error inesperado al agregar usuario enzo: Expecting value: line 1 column 1 (char 0)
+2024-12-07 20:24:30 - ERROR - Error: El usuario enzo ya existe.
+2024-12-07 20:24:47 - ERROR - Error: Las contraseñas no coinciden.
+2024-12-07 20:25:11 - ERROR - Error: Contraseña actual incorrecta.

@@ -1,0 +1,3 @@
+2024-12-06 23:05:42,881 - ERROR - Error al copiar archivo: [Errno 2] No such file or directory: '/ruta/completa/origen.txt'
+2024-12-06 23:06:10,913 - INFO - Copiado archivo de prueba1.txt a prueba2.txt
+2024-12-06 23:22:50,111 - INFO - Copiado archivo de prueba1.txt a prueba2.txt

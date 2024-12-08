@@ -1,0 +1,22 @@
+{
+    "enzo": {
+        "password": "enzoericof",
+        "datos_personales": "programador",
+        "horarios_permitidos": [
+            "08:00-18:00"
+        ],
+        "ips_permitidas": [
+            "192.168.100.149"
+        ]
+    },
+    "horacio": {
+        "password": "horacioaranda",
+        "datos_personales": "empleado",
+        "horarios_permitidos": [
+            "08:00-18:00"
+        ],
+        "ips_permitidas": [
+            "192.168.100.149"
+        ]
+    }
+}

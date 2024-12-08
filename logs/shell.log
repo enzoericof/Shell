@@ -1,0 +1,66 @@
+2024-12-06 23:25:59,571 - INFO - Copiado archivo de prueba1.txt a prueba2.txt
+2024-12-06 23:36:16,913 - INFO - Copiado archivo de prueba1.txt a prueba2.txt
+2024-12-06 23:38:25,262 - ERROR - Error al copiar archivo: [Errno 2] No such file or directory: 'prueba200.txt'
+2024-12-06 23:46:29,973 - INFO - Movido archivo de prueba1.txt a directorioprueba1
+2024-12-06 23:53:27,037 - INFO - Renombrado prueba2.txt a prueba3.txt
+2024-12-07 00:25:37,571 - ERROR - Error al procesar el comando: name 'list_dir' is not defined
+2024-12-07 00:26:17,701 - ERROR - Error al procesar el comando: name 'list_dir' is not defined
+2024-12-07 00:26:48,422 - INFO - Usuario salió de la sesión.
+2024-12-07 00:27:59,503 - ERROR - Error al procesar el comando: name 'create_dir' is not defined
+2024-12-07 00:28:36,213 - ERROR - Error al procesar el comando: name 'change_dir' is not defined
+2024-12-07 00:28:47,204 - ERROR - Error al procesar el comando: name 'list_dir' is not defined
+2024-12-07 00:28:57,499 - INFO - Usuario salió de la sesión.
+2024-12-07 00:30:11,171 - ERROR - Error al procesar el comando: name 'create_dir' is not defined
+2024-12-07 00:30:12,747 - INFO - Usuario salió de la sesión.
+2024-12-07 00:31:55,843 - ERROR - Error al procesar el comando: name 'create_dir' is not defined
+2024-12-07 00:32:05,539 - INFO - Usuario salió de la sesión.
+2024-12-07 00:33:59,769 - ERROR - Error al procesar el comando: name 'move_file' is not defined
+2024-12-07 00:34:02,591 - INFO - Usuario salió de la sesión.
+2024-12-07 00:47:41,604 - INFO - Creado directorio directorioprueba2
+2024-12-07 00:48:06,285 - INFO - Creado directorio /root/Shell-main/LFS-Shell/directorioprueba2
+2024-12-07 00:48:59,208 - INFO - Movido archivo de prueba3.txt a directorioprueba2
+2024-12-07 00:49:06,875 - INFO - Creado directorio directorioprueba5
+2024-12-07 00:51:06,982 - INFO - Copiado archivo de prueba10.txt a prueba11.txt
+2024-12-07 00:51:18,424 - INFO - Renombrado prueba11.txt a prueba12.txt
+2024-12-07 00:52:19,534 - INFO - Listados contenidos de commands
+2024-12-07 00:52:58,281 - ERROR - Error al listar directorio root/Shell-main/LFS-Shell/commands: [Errno 2] No such file or directory: 'root/Shell-main/LFS-Shell/commands'
+2024-12-07 00:53:26,095 - INFO - Usuario salió de la sesión.
+2024-12-07 01:04:18,822 - INFO - Listados contenidos de commands
+2024-12-07 01:04:52,774 - INFO - Listados contenidos de /root/Shell-main/LFS-Shell/commands
+2024-12-07 01:05:30,257 - INFO - Usuario salió de la sesión.
+2024-12-07 01:15:34,585 - INFO - Creado directorio pruebadirectorio69
+2024-12-07 01:15:59,214 - INFO - Listados contenidos de pruebadirectorio69
+2024-12-07 01:16:29,651 - INFO - Listados contenidos de commands
+2024-12-07 01:16:45,861 - INFO - Listados contenidos de directorioprueba1
+2024-12-07 01:16:48,919 - INFO - Usuario salió de la sesión.
+2024-12-07 01:18:27,553 - ERROR - Error al procesar el comando: name 'ir' is not defined
+2024-12-07 01:18:47,507 - INFO - Listados contenidos de directorioprueba1
+2024-12-07 01:18:54,681 - ERROR - Error al procesar el comando: name 'ir' is not defined
+2024-12-07 01:19:15,515 - INFO - Usuario salió de la sesión.
+2024-12-07 01:20:46,264 - ERROR - Error al procesar el comando: name 'ir' is not defined
+2024-12-07 01:20:48,998 - INFO - Usuario salió de la sesión.
+2024-12-07 01:21:59,306 - INFO - Directorio cambiado a: /root/Shell-main/LFS-Shell/directorioprueba1
+2024-12-07 01:22:50,024 - INFO - Usuario salió de la sesión.
+2024-12-07 14:16:15,880 - ERROR - Error al procesar el comando: agregar_usuario() missing 5 required positional arguments: 'nombre', 'contrasena', 'verificar_contrasena', 'datos_personales', and 'ips_permitidas'
+2024-12-07 14:16:38,838 - INFO - Usuario salió de la sesión.
+2024-12-07 14:36:07,548 - INFO - Usuario Horacio agregado con éxito. IPs permitidas registradas. Datos: empleado, IPs: ['192.168.100.149']
+2024-12-07 14:37:40,892 - ERROR - Error: El directorio 'user_data.txt' no existe.
+2024-12-07 14:37:56,869 - INFO - Usuario salió de la sesión.
+2024-12-07 14:39:29,389 - ERROR - Error: Las contraseñas no coinciden.
+2024-12-07 14:39:40,656 - INFO - Usuario salió de la sesión.
+2024-12-07 14:41:06,698 - ERROR - Error: Contraseña actual incorrecta o usuario no encontrado.
+2024-12-07 14:41:19,263 - INFO - Usuario salió de la sesión.
+2024-12-07 19:55:51,057 - ERROR - Error inesperado al agregar usuario Enzo: name 'json' is not defined
+2024-12-07 19:56:12,002 - INFO - Usuario salió de la sesión.
+2024-12-07 20:17:22,631 - ERROR - Error inesperado al agregar usuario Enzo: name 'json' is not defined
+2024-12-07 20:21:04,121 - ERROR - Error inesperado al agregar usuario Enzo: Expecting value: line 1 column 1 (char 0)
+2024-12-07 20:22:13,112 - ERROR - Error inesperado al agregar usuario enzo: Expecting value: line 1 column 1 (char 0)
+2024-12-07 20:22:17,299 - INFO - Usuario salió de la sesión.
+2024-12-07 20:23:58,609 - INFO - Usuario enzo agregado con éxito. Datos: programador, IPs: ['192.168.100.149']
+2024-12-07 20:24:30,702 - ERROR - Error: El usuario enzo ya existe.
+2024-12-07 20:24:46,994 - ERROR - Error: Las contraseñas no coinciden.
+2024-12-07 20:25:11,889 - ERROR - Error: Contraseña actual incorrecta.
+2024-12-07 20:25:18,621 - INFO - Usuario salió de la sesión.
+2024-12-07 21:16:13,716 - INFO - Contraseña cambiada con éxito para el usuario enzo.
+2024-12-07 21:16:46,625 - INFO - Usuario horacio agregado con éxito. Datos: empleado, IPs: ['192.168.100.149']
+2024-12-07 21:16:49,440 - INFO - Usuario salió de la sesión.
