@@ -1,6 +1,7 @@
 import crypt
 import subprocess
 import os
+import json
 from utils import log_action, log_error
 
 USER_DATA_FILE = "/root/Shell-main/LFS-Shell/users/user_data.json"
@@ -39,11 +40,10 @@ def agregar_usuario(nombre, contrasena, verificar_contrasena, datos_personales, 
             return
 
         # Guardar datos
-        hashed_passwd = crypt.crypt(contrasena)
         usuarios[nombre] = {
-            "password": hashed_passwd,
+            "password": contrasena,  # Contraseña en texto plano
             "datos_personales": datos_personales,
-            "horarios_permitidos": [],
+            "horarios_permitidos": ["08:00-18:00"],
             "ips_permitidas": ips_permitidas
         }
         guardar_datos_usuarios(usuarios)
@@ -77,16 +77,14 @@ def cambiar_contrasena(usuario, contrasena_actual, nueva_contrasena, verificar_n
             return
 
         # Verificar contraseña actual
-        hashed_actual = crypt.crypt(contrasena_actual)
-        if usuarios[usuario]["password"] != hashed_actual:
+        if usuarios[usuario]["password"] != contrasena_actual:
             mensaje = "Error: Contraseña actual incorrecta."
             print(mensaje)
             log_error(mensaje)
             return
 
         # Cambiar la contraseña
-        hashed_nueva = crypt.crypt(nueva_contrasena)
-        usuarios[usuario]["password"] = hashed_nueva
+        usuarios[usuario]["password"] = nueva_contrasena
         guardar_datos_usuarios(usuarios)
 
         mensaje = f"Contraseña cambiada con éxito para el usuario {usuario}."

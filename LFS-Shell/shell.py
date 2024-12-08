@@ -2,6 +2,7 @@ shell.py
 import os
 import sys
 import logging
+import json
 from commands.file_ops import copiar, mover, renombrar
 from commands.dir_ops import listar, crear_directorio, ir
 from commands.user_ops import agregar_usuario, cambiar_contrasena
@@ -50,9 +51,24 @@ def main():
                 os.chmod(path, int(mode, 8))
                 log_action(f"Cambiados permisos de {path} a {mode}")
             elif command.startswith("usuario"):
-                agregar_usuario()
+                try:
+                    nombre = input("Nombre de usuario: ").strip()
+                    contrasena = input("Contraseña: ").strip()
+                    verificar_contrasena = input("Verificar contraseña: ").strip()
+                    datos_personales = input("Datos personales: ").strip()
+                    ips_permitidas = input("IPs permitidas (separadas por comas): ").strip().split(",")
+                    agregar_usuario(nombre, contrasena, verificar_contrasena, datos_personales, ips_permitidas)
+                except Exception as e:
+                    log_error(f"Error al agregar usuario: {str(e)}")
             elif command.startswith("contraseña"):
-                cambiar_contrasena()
+                 try:
+                    usuario = input("Nombre de usuario: ").strip()
+                    contrasena_actual = input("Contraseña actual: ").strip()
+                    nueva_contrasena = input("Nueva contraseña: ").strip()
+                    verificar_nueva_contrasena = input("Verificar nueva contraseña: ").strip()
+                    cambiar_contrasena(usuario, contrasena_actual, nueva_contrasena, verificar_nueva_contrasena)
+                except Exception as e:
+                     log_error(f"Error al cambiar contraseña: {str(e)}")
             elif command.startswith("servicio"):
                 _, action, service_name = command.split()
                 if action == "iniciar":
@@ -63,5 +79,5 @@ def main():
                 os.system(command)
         except Exception as e:
             log_error(f"Error al procesar el comando: {str(e)}")
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
