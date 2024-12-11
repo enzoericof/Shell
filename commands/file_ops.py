@@ -4,6 +4,7 @@ import argparse
 from utils import log_action, log_error
 import pwd
 import json
+
 USERS_JSON_PATH = '/root/Shell-main/LFS-Shell/users/user_data.json'
 
 def copiar(origen, destino):
@@ -34,17 +35,6 @@ def mover(origen, destino):
         print(mensaje)
         log_error(mensaje)
 
-def cargar_usuarios():
-    try:
-        with open(USERS_JSON_PATH, 'r') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        print(f"Error: El archivo {USERS_JSON_PATH} no existe.")
-        return {}
-    except json.JSONDecodeError:
-        print(f"Error: El archivo {USERS_JSON_PATH} no tiene un formato válido.")
-        return {}
-
 def renombrar(origen, nuevo_nombre):
     """
     Renombra un archivo o directorio.
@@ -59,100 +49,168 @@ def renombrar(origen, nuevo_nombre):
         print(mensaje)
         log_error(mensaje)
 
-def cambiar_permisos(path, mode, usuario_actual):
-    """
-    Cambia los permisos de un archivo o directorio solo si el usuario tiene permisos.
-    """
+def cargar_usuarios():
     try:
-        usuarios = cargar_usuarios()
-        # Verificar si el usuario actual está en el archivo JSON
-        if usuario_actual not in usuarios:
-            mensaje = f"El usuario {usuario_actual} no existe en el sistema."
-            print(mensaje)
-            log_error(mensaje)
-            return
-        
-        # Obtén la información del archivo
-        info = os.stat(path)
-        propietario_uid = info.st_uid
-        usuario_uid = pwd.getpwnam(usuario_actual).pw_uid
+        with open('/root/Shell-main/LFS-Shell/users/user_data.json', 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        print("El archivo de usuarios no se encontró.")
+        return {}
+    except json.JSONDecodeError:
+        print("Error al decodificar el archivo JSON de usuarios.")
+        return {}
 
-        # Verifica si el usuario actual es el propietario o root
-        if usuario_uid != propietario_uid and usuario_uid != 0:
-            mensaje = f"No tienes permisos para cambiar los permisos de {path}."
-            print(mensaje)
-            log_error(mensaje)
-            return
+import os
+import subprocess
+
+import grp
+
+def cambiar_permisos(path, mode, usuario_actual):
+    import os
+    import subprocess
+    import grp
+
+    try:
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"El archivo o directorio '{path}' no existe.")
+
+        # Obtener propietario y grupo del archivo
+        detalles = subprocess.check_output(['ls', '-ld', path]).decode().split()
+        propietario = detalles[2]
+        grupo = detalles[3]
+
+        # Verificar si el usuario pertenece al grupo
+        grupos_usuario = [g.gr_name for g in grp.getgrall() if usuario_actual in g.gr_mem]
+
+        # Verificar permisos para cambiar el archivo
+        if usuario_actual != propietario and grupo not in grupos_usuario and usuario_actual != 'root':
+            raise PermissionError(f"El usuario '{usuario_actual}' no tiene permisos para cambiar los permisos de '{path}'.")
+
+        # Validar el modo
+        if not mode.isdigit() or len(mode) != 3:
+            raise ValueError("El modo de permisos debe ser un número octal de tres dígitos.")
 
         # Cambiar los permisos
-        os.chmod(path, int(mode, 8))
-        mensaje = f"Permisos de {path} cambiados a {mode}."
-        print(mensaje)
-        log_action(mensaje)
-    except FileNotFoundError:
-        mensaje = f"El archivo o directorio {path} no existe."
-        print(mensaje)
-        log_error(mensaje)
-    except PermissionError:
-        mensaje = f"No tienes permisos para realizar esta operación."
-        print(mensaje)
-        log_error(mensaje)
+        mode_octal = int(mode, 8)
+        os.chmod(path, mode_octal)
+        print(f"Permisos del archivo o directorio '{path}' cambiados a {mode}.")
     except Exception as e:
-        mensaje = f"Error inesperado al cambiar permisos de {path}: {e}"
-        print(mensaje)
-        log_error(mensaje)
+        print(f"Error al cambiar los permisos: {e}")
 
 def cambiar_propietario(path, nuevo_usuario, usuario_actual):
-    """
-    Cambia el propietario de un archivo o directorio solo si el usuario actual tiene permisos de root.
-    """
     try:
-        usuarios = cargar_usuarios()
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"El archivo o directorio '{path}' no existe.")
 
-        # Verificar si el usuario actual está en el archivo JSON
-        if usuario_actual not in usuarios:
-            mensaje = f"El usuario {usuario_actual} no existe en el sistema."
-            print(mensaje)
-            log_error(mensaje)
-            return
+        # Obtener propietario y grupo del archivo
+        detalles = subprocess.check_output(['ls', '-ld', path]).decode().split()
+        propietario_actual = detalles[2]
+        grupo = detalles[3]
 
-        # Verifica si el usuario actual tiene privilegios de root
-        usuario_uid = pwd.getpwnam(usuario_actual).pw_uid
-        if usuario_uid != 0:
-            mensaje = f"Solo el administrador (root) puede cambiar el propietario de {path}."
-            print(mensaje)
-            log_error(mensaje)
-            return
+        # Verificar si el usuario actual es el propietario o pertenece al grupo
+        grupos_usuario = [g.gr_name for g in grp.getgrall() if usuario_actual in g.gr_mem]
+        if usuario_actual != propietario_actual and grupo not in grupos_usuario and usuario_actual != 'root':
+            raise PermissionError(f"El usuario '{usuario_actual}' no puede cambiar el propietario de '{path}'.")
 
-        # Verificar si el nuevo usuario existe en el archivo JSON
-        if nuevo_usuario not in usuarios:
-            mensaje = f"El usuario {nuevo_usuario} no existe en el sistema."
-            print(mensaje)
-            log_error(mensaje)
-            return
-
-        # Obtener UID y GID del nuevo propietario
-        uid = pwd.getpwnam(nuevo_usuario).pw_uid
-        gid = pwd.getpwnam(nuevo_usuario).pw_gid
+        # Verificar si el nuevo propietario existe
+        try:
+            subprocess.run(['id', nuevo_usuario], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except subprocess.CalledProcessError:
+            raise ValueError(f"El nuevo propietario '{nuevo_usuario}' no existe en el sistema.")
 
         # Cambiar el propietario
-        os.chown(path, uid, gid)
-        mensaje = f"Propietario de {path} cambiado a {nuevo_usuario}."
-        print(mensaje)
-        log_action(mensaje)
-    except KeyError:
-        mensaje = f"El usuario {nuevo_usuario} no existe."
-        print(mensaje)
-        log_error(mensaje)
-    except FileNotFoundError:
-        mensaje = f"El archivo o directorio {path} no existe."
-        print(mensaje)
-        log_error(mensaje)
-    except PermissionError:
-        mensaje = f"No tienes permisos para cambiar el propietario de {path}."
-        print(mensaje)
-        log_error(mensaje)
+        subprocess.run(['chown', nuevo_usuario, path], check=True)
+        print(f"Propietario del archivo '{path}' cambiado a '{nuevo_usuario}'.")
     except Exception as e:
-        mensaje = f"Error inesperado al cambiar propietario de {path}: {e}"
+        print(f"Error al cambiar el propietario: {e}")
+
+
+def validar_permisos(path, accion):
+    """Verifica si el usuario actual tiene permisos para realizar una acción específica en un archivo o directorio."""
+    acciones = {
+        'lectura': os.R_OK,
+        'escritura': os.W_OK,
+        'ejecucion': os.X_OK
+    }
+
+    if accion not in acciones:
+        raise ValueError(f"Acción no válida: {accion}")
+
+    # Verifica permisos usando os.access
+    if not os.access(path, acciones[accion]):
+        mensaje = f"El usuario {current_user} no tiene permisos de {accion} sobre {path}."
         print(mensaje)
-        log_error(mensaje)
+        return False
+    return True
+
+
+    # Función para el comando vim
+def comando_vim(path):
+    """Simula el comando vim para editar un archivo."""
+    try:
+        if validar_permisos(path, 'escritura'):
+            print(f"Se está editando {path}.")
+            # Aquí puedes simular la edición real o registrar la operación
+        else:
+            print(f"No tienes permisos para editar {path}.")
+    except Exception as e:
+        print(f"Error al intentar editar {path}: {str(e)}")
+
+def configurar_directorio_usuario(usuario):
+    home_dir = f"/home/{usuario}"
+    
+    try:
+        # Asegurar que el bit setgid esté habilitado para heredar grupo
+        subprocess.run(['chmod', 'g+s', home_dir], check=True)
+        
+        # Configurar ACLs predeterminadas para heredar permisos
+        subprocess.run(['setfacl', '-d', '-m', f'u:{usuario}:rwx', home_dir], check=True)
+        subprocess.run(['setfacl', '-d', '-m', 'g::rwx', home_dir], check=True)
+        subprocess.run(['setfacl', '-d', '-m', 'o::rx', home_dir], check=True)
+
+        # Crear un hook para corregir propietarios automáticamente
+        hook_script = f"""
+#!/bin/bash
+chown {usuario}:{usuario} "$@"
+"""
+        hook_path = "/usr/local/bin/correct_owner"
+        with open(hook_path, "w") as hook_file:
+            hook_file.write(hook_script)
+        
+        # Hacer el hook ejecutable
+        subprocess.run(['chmod', '+x', hook_path], check=True)
+
+        print(f"Configuración completada para futuros archivos en {home_dir}.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error al configurar el directorio para {usuario}: {e}")
+
+
+import subprocess
+import os
+from inotify_simple import INotify, flags
+
+def monitorear_directorio(usuario, directorio):
+    home_dir = f"/home/{usuario}"
+    
+    try:
+        # Verificar que el directorio existe
+        if not os.path.exists(home_dir):
+            raise FileNotFoundError(f"El directorio {home_dir} no existe.")
+        
+        print(f"Configurando directorio {home_dir} para el usuario {usuario}...")
+        
+        # Cambiar el propietario del directorio al usuario
+        subprocess.run(['chown', usuario, home_dir], check=True)
+        print(f"Propietario del directorio cambiado a {usuario}.")
+        
+        # Configurar permisos del directorio
+        subprocess.run(['chmod', '700', home_dir], check=True)
+        print("Permisos configurados correctamente (solo usuario tiene acceso completo).")
+        
+        print(f"Configuración completada para futuros archivos en {home_dir}.")
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error al ejecutar un comando: {e}")
+    except Exception as e:
+        print(f"Error inesperado: {e}")

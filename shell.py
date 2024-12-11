@@ -1,95 +1,198 @@
+"""COMANDOS INICIALES"""
+
 import os
 import sys
+import pwd
+from inotify_simple import INotify, flags
 import logging
+import socket
 import json
-from commands.file_ops import copiar, mover, renombrar
+from datetime import datetime
+from commands.file_ops import copiar, mover, renombrar, cambiar_propietario, cambiar_permisos, validar_permisos, comando_vim, configurar_directorio_usuario, monitorear_directorio
 from commands.dir_ops import listar, crear_directorio, ir
-from commands.user_ops import agregar_usuario, cambiar_contrasena
+from commands.user_ops import agregar_usuario, cambiar_contrasena, validar_acceso,es_ip_permitida, es_horario_permitido, validar_credenciales, solicitar_ips 
 from commands.service_ops import iniciar_servicio, detener_servicio
-from utils import log_action, log_error
+from utils import log_action, log_error, log_horario_fuera_de_rango
 
 LOG_DIR = "/root/Shell-main/LFS-Shell/logs"
+USER_DATA_FILE= "/root/Shell-main/LFS-Shell/users/user_data.json"
+current_user = None
 
-# Configurar logging
-if not os.path.exists(LOG_DIR):
-    os.makedirs(LOG_DIR)
-logging.basicConfig(
-    filename=f"{LOG_DIR}/shell.log",
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
 
-def solicitar_ips():
-    """Solicitar al usuario las IPs permitidas."""
-    ips = []
-    print("Ingrese las IPs permitidas para este usuario. Escriba 'done' para finalizar:")
-    while True:
-        ip = input("IP: ").strip()
-        if ip.lower() == 'done':
-            break
-        ips.append(ip)
-    return ips
+
+"""EJECUCION"""
 
 def main():
-    print("Bienvenido a LFS Shell")
-    while True:
+    session_active = False
+    current_user = None
+
+    while not session_active:
+        print("Bienvenido a LFS Shell")
+        user_command = input("Para iniciar sesión presione Enter, para registrar un usuario escriba usuario: ").strip()
+
+        if user_command.startswith("usuario"):
+            try:
+                # Código para agregar usuario
+                nombre = input("Nombre de usuario: ").strip().lower()
+                contrasena = input("Contraseña: ").strip()
+                verificar_contrasena = input("Verificar contraseña: ").strip()
+                datos_personales = input("Datos personales: ").strip()
+                ips_permitidas = solicitar_ips()
+                agregar_usuario(nombre, contrasena, verificar_contrasena, datos_personales, ips_permitidas)
+            except Exception as e:
+                log_error(f"Error al agregar usuario: {str(e)}")
+        else:
+            username = input("Usuario: ").strip().lower()
+            password = input("Contraseña: ").strip()
+
+            # Validar credenciales en el sistema real
+            if validar_credenciales(username, password):
+                session_active = True
+                current_user = username
+
+                # Verificar horario e IP
+                ip_actual = socket.gethostbyname(socket.gethostname())
+                horario_actual = datetime.now().strftime("%H:%M")
+                if not es_horario_permitido(username, horario_actual):
+                    log_horario_fuera_de_rango(username, ip_actual)
+
+                # Cambiar al directorio del usuario
+                user_dir = f"/home/{username}"
+                if session_active and current_user:
+                    monitorear_directorio(current_user, user_dir)
+                if not os.path.exists(user_dir):
+                    os.makedirs(user_dir)
+                os.chdir(user_dir)
+                log_action(f"Usuario {username} inició sesión. IP: {ip_actual}")
+            else:
+                print("Credenciales incorrectas. Intente de nuevo.")
+    while session_active:
         try:
-            command = input("shell> ").strip()
+            command = input(f"{current_user}@lfs-shell> ").strip()
             if command.lower() in ["exit", "quit"]:
-                log_action("Usuario salió de la sesión.")
+                log_action(f"Usuario {current_user} salió de la sesión.")
                 print("Adiós!")
+                horario_actual = datetime.now().strftime("%H:%M")
+                if not es_horario_permitido(username, horario_actual):
+                    log_horario_fuera_de_rango(username, ip_actual)
                 break
             elif command.startswith("copiar"):
-                _, src, dest = command.split()
-                copiar(src, dest)
+                try:
+                    _, src, dest = command.split()
+                    if validar_permisos(src, 'lectura'):
+                        copiar(src, dest)
+                except Exception as e:
+                    log_error(f"Error al copiar: {str(e)}")
             elif command.startswith("mover"):
-                _, src, dest = command.split()
-                mover(src, dest)
+                try:
+                    _, src, dest = command.split()
+                    if validar_permisos(src, 'lectura') and validar_permisos(src, 'escritura'):
+                        mover(src, dest)
+                except Exception as e:
+                    log_error(f"Error al mover: {str(e)}")
             elif command.startswith("renombrar"):
-                _, old_name, new_name = command.split()
-                renombrar(old_name, new_name)
+                try:
+                    _, old_name, new_name = command.split()
+                    if validar_permisos(old_name, 'escritura'):
+                        renombrar(old_name, new_name)
+                except Exception as e:
+                    log_error(f"Error al renombrar: {str(e)}")
             elif command.startswith("listar"):
-                _, path = command.split()
-                listar(path)
+                try:
+                    _, path = command.split()
+                    if validar_permisos(path, 'lectura'):
+                        listar(path)
+                except Exception as e:
+                    log_error(f"Error al listar: {str(e)}")
             elif command.startswith("creardir"):
-                _, path = command.split()
-                crear_directorio(path)
+                try:
+                    _, path = command.split()
+                    if validar_permisos(os.path.dirname(path), 'escritura'):
+                        crear_directorio(path)
+                except Exception as e:
+                    log_error(f"Error al crear directorio: {str(e)}")
             elif command.startswith("ir"):
-                _, path = command.split()
-                ir(path)
+                try:
+                    _, path = command.split()
+                    if validar_permisos(path, 'ejecucion'):
+                        ir(path)
+                except Exception as e:
+                    log_error(f"Error al cambiar de directorio: {str(e)}")
+            elif command.startswith("propietario"):
+                try:
+                    # Divide los argumentos y valida
+                    args = command.split()
+                    if len(args) != 3:
+                        print("Error: Formato incorrecto. Usa 'propietario <path> <nuevo_usuario>'.")
+                        return
+        
+                    _, path, nuevo_usuario = args
+
+                    # Llama a la función para cambiar propietario con el usuario actual
+                    cambiar_propietario(path, nuevo_usuario, current_user)
+    
+                except FileNotFoundError as e:
+                    print(f"Error: {e}")
+                except PermissionError as e:
+                    print(f"Error: {e}")
+                except ValueError as e:
+                    print(f"Error: {e}")
+                except Exception as e:
+                    log_error(f"Error al procesar el comando propietario: {str(e)}")
+
             elif command.startswith("permisos"):
-                _, mode, path = command.split()
-                os.chmod(path, int(mode, 8))
-                log_action(f"Cambiados permisos de {path} a {mode}")
+                try:
+                    # Divide los argumentos y valida
+                    args = command.split()
+                    if len(args) != 3:
+                        print("Error: Formato incorrecto. Usa 'permisos <path> <mode>'.")
+                        return
+                    _, path, mode = args
+
+                    # Llama a la función para cambiar permisos con el usuario actual
+                    cambiar_permisos(path, mode, current_user)
+                except ValueError:
+                    print("Error: Formato incorrecto. Usa 'permisos <path> <mode>'.")
+                except Exception as e:
+                    log_error(f"Error al procesar el comando permisos: {str(e)}")
             elif command.startswith("usuario"):
-                 try:
-                     nombre = input("Nombre de usuario: ").strip()
-                     contrasena = input("Contraseña: ").strip()
-                     verificar_contrasena = input("Verificar contraseña: ").strip()
-                     datos_personales = input("Datos personales: ").strip()
-                     ips_permitidas = input("IPs permitidas (separadas por comas): ").strip().split(",")
-                     agregar_usuario(nombre, contrasena, verificar_contrasena, datos_personales, ips_permitidas)
-                 except Exception as e:
-                     log_error(f"Error al agregar usuario: {str(e)}")
+                try:
+                    nombre = input("Nombre de usuario: ").strip().lower()
+                    contrasena = input("Contraseña: ").strip()
+                    verificar_contrasena = input("Verificar contraseña: ").strip()
+                    datos_personales = input("Datos personales: ").strip()
+                    ips_permitidas = input("IPs permitidas (separadas por comas): ").strip().split(",")
+                    agregar_usuario(nombre, contrasena, verificar_contrasena, datos_personales, ips_permitidas)
+                except Exception as e:
+                    log_error(f"Error al agregar usuario: {str(e)}")
             elif command.startswith("contraseña"):
-                 try:
-                     usuario = input("Nombre de usuario: ").strip()
-                     contrasena_actual = input("Contraseña actual: ").strip()
-                     nueva_contrasena = input("Nueva contraseña: ").strip()
-                     verificar_nueva_contrasena = input("Verificar nueva contraseña: ").strip()
-                     cambiar_contrasena(usuario, contrasena_actual, nueva_contrasena, verificar_nueva_contrasena)
-                 except Exception as e:
-                     log_error(f"Error al cambiar contraseña: {str(e)}")
+                try:
+                    usuario = input("Nombre de usuario: ").strip()
+                    contrasena_actual = input("Contraseña actual: ").strip()
+                    nueva_contrasena = input("Nueva contraseña: ").strip()
+                    verificar_nueva_contrasena = input("Verificar nueva contraseña: ").strip()
+                    cambiar_contrasena(usuario, contrasena_actual, nueva_contrasena, verificar_nueva_contrasena)
+                except Exception as e:
+                    log_error(f"Error al cambiar contraseña: {str(e)}")
             elif command.startswith("servicio"):
-                _, action, service_name = command.split()
-                if action == "iniciar":
-                    iniciar_servicio(service_name)
-                elif action == "detener":
-                    detener_servicio(service_name)
+                try:
+                    _, action, service_name = command.split()
+                    if action == "iniciar":
+                        iniciar_servicio(service_name)
+                    elif action == "detener":
+                        detener_servicio(service_name)
+                    else:
+                        print("Error: Acción desconocida. Usa 'servicio iniciar|detener <service_name>'.")
+                except ValueError:
+                    print("Error: Formato incorrecto. Usa 'servicio iniciar|detener <service_name>'.")
+                except Exception as e:
+                    log_error(f"Error al manejar servicio: {str(e)}")
+
             else:
                 os.system(command)
         except Exception as e:
-            log_error(f"Error al procesar el comando: {str(e)}")
+            log_error(f"Error al ejecutar el comando: {str(e)}")
 
 if __name__ == "__main__":
     main()
+

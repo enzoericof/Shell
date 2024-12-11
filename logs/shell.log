@@ -64,3 +64,143 @@
 2024-12-07 21:16:13,716 - INFO - Contraseña cambiada con éxito para el usuario enzo.
 2024-12-07 21:16:46,625 - INFO - Usuario horacio agregado con éxito. Datos: empleado, IPs: ['192.168.100.149']
 2024-12-07 21:16:49,440 - INFO - Usuario salió de la sesión.
+2024-12-08 03:31:02,819 - INFO - Usuario Federico agregado con éxito. Datos: Streamer, IPs: ['151.152.256']
+2024-12-08 03:32:06,502 - INFO - Contraseña cambiada con éxito para el usuario Federico.
+2024-12-08 03:32:29,379 - INFO - Directorio cambiado a: /root/Shell-main/LFS-Shell/users
+2024-12-08 13:49:17,244 - INFO - Usuario salió de la sesión.
+2024-12-08 16:02:10,337 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:02:35,454 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:02:41,268 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:03:08,161 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:03:17,975 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:07:22,970 - INFO - Usuario Erico agregado con éxito. Datos: Programador, IPs: ['192.168.0.11']
+2024-12-08 16:07:22,974 - ERROR - El usuario Erico no existe.
+2024-12-08 16:07:22,975 - INFO - Permisos de /root/Shell-main/LFS-Shell/users/Erico cambiados a 0700.
+2024-12-08 16:07:56,174 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:08:17,834 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:13:50,708 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:24:12,073 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:24:47,469 - ERROR - Error inesperado al agregar usuario Enzo: Expecting property name enclosed in double quotes: line 3 column 9 (char 24)
+2024-12-08 16:27:48,387 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:27:54,542 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:30:01,567 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:35:52,794 - ERROR - Error al validar credenciales: name 'USER_DATA_FILE' is not defined
+2024-12-08 16:46:04,724 - ERROR - Error al validar credenciales para enzo: Expecting property name enclosed in double quotes: line 3 column 9 (char 24)
+2024-12-08 16:48:03,387 - ERROR - Error al validar credenciales para enzo: Expecting property name enclosed in double quotes: line 3 column 9 (char 24)
+2024-12-08 17:04:04,221 - ERROR - Error al validar credenciales para enzo: Expecting property name enclosed in double quotes: line 3 column 9 (char 24)
+2024-12-08 17:05:27,223 - ERROR - Error al validar credenciales para enzo: Expecting property name enclosed in double quotes: line 3 column 9 (char 24)
+2024-12-08 17:17:09,060 - ERROR - Error al validar credenciales para enzo: Expecting property name enclosed in double quotes: line 3 column 9 (char 24)
+2024-12-08 17:18:37,228 - ERROR - Error al validar credenciales para enzo: Expecting property name enclosed in double quotes: line 3 column 9 (char 24)
+2024-12-08 17:30:50,422 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-08 20:55:05,950 - INFO - Usuario enzo salió de la sesión.
+2024-12-08 21:01:41,123 - INFO - Usuario Federico inició sesión. IP: 127.0.0.1
+2024-12-08 21:08:45,804 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-08 21:09:08,216 - INFO - Contraseña cambiada con éxito para el usuario enzo.
+2024-12-08 21:10:37,915 - INFO - Creado directorio /home/enzo/archivos_enzo
+2024-12-08 21:11:16,076 - ERROR - Error al procesar el comando: not enough values to unpack (expected 3, got 2)
+2024-12-08 21:11:31,286 - INFO - Usuario enzo salió de la sesión.
+2024-12-08 21:39:35,372 - INFO - Usuario Federico inició sesión. IP: 127.0.0.1
+2024-12-08 21:39:59,821 - INFO - Permisos de /home/enzo/archivos_enzo cambiados a 0777.
+2024-12-08 21:40:50,886 - INFO - Usuario Federico inició sesión. IP: 127.0.0.1
+2024-12-08 21:41:02,362 - ERROR - Error al procesar el comando: not enough values to unpack (expected 3, got 2)
+2024-12-08 21:41:22,015 - INFO - Permisos de /home/enzo/archivos_enzo cambiados a 0755.
+2024-12-08 21:41:40,939 - INFO - Permisos de /home/enzo/archivos_enzo cambiados a 0777.
+2024-12-08 21:44:13,786 - INFO - Usuario Federico salió de la sesión.
+2024-12-08 22:00:54,107 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-08 22:01:19,492 - ERROR - Error al procesar el comando: not enough values to unpack (expected 4, got 3)
+2024-12-08 22:02:06,556 - INFO - Usuario enzo salió de la sesión.
+2024-12-08 22:30:08,851 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-08 22:31:20,576 - ERROR - Error al cambiar permisos: name 'usuario_actual' is not defined
+2024-12-08 22:34:40,654 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-08 22:35:01,527 - ERROR - Error al cambiar permisos: name 'usuario_actual' is not defined
+2024-12-08 22:36:45,238 - INFO - Usuario enzo salió de la sesión.
+2024-12-08 22:41:01,622 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-08 22:41:29,988 - ERROR - Error inesperado al cambiar permisos de /home/enzo/archivos_enzo: "getpwnam(): name not found: 'enzo'"
+2024-12-09 00:00:16,719 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 00:00:41,321 - ERROR - Error inesperado al cambiar permisos de /home/enzo/archivos_enzo: "getpwnam(): name not found: 'enzo'"
+2024-12-09 19:16:48,224 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 19:17:18,485 - INFO - Directorio cambiado a: /home/enzo/archivos_enzo
+2024-12-09 19:18:09,994 - INFO - Listados contenidos de /home/enzo/archivos_enzo
+2024-12-09 19:23:50,362 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 19:29:13,354 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 19:29:40,981 - ERROR - Error inesperado al cambiar permisos de /home/enzo/archivos_enzo: "getpwnam(): name not found: 'enzo'"
+2024-12-09 19:34:36,140 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 19:34:54,852 - INFO - Permisos de /home/enzo/archivos_enzo cambiados a 0777.
+2024-12-09 19:35:56,147 - ERROR - El usuario federico no tiene permisos sobre /home/enzo/archivos_enzo.
+2024-12-09 19:38:23,929 - INFO - Directorio cambiado a: /home/enzo/archivos_enzo
+2024-12-09 19:55:49,268 - INFO - Usuario Federico inició sesión. IP: 127.0.0.1
+2024-12-09 19:56:08,818 - ERROR - Error: El directorio '/home/federico' no existe.
+2024-12-09 19:56:19,846 - INFO - Directorio cambiado a: /home/Federico
+2024-12-09 19:57:31,625 - ERROR - El usuario federico no tiene permisos sobre /home/Federico/org.txt.
+2024-12-09 20:04:16,566 - INFO - Usuario federico inició sesión. IP: 127.0.0.1
+2024-12-09 20:04:38,215 - INFO - Directorio cambiado a: /home/federico
+2024-12-09 20:05:24,112 - INFO - Permisos de /home/federico/org.txt cambiados a 0777.
+2024-12-09 20:05:35,293 - INFO - Usuario federico salió de la sesión.
+2024-12-09 20:05:54,856 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 20:08:00,717 - INFO - Usuario federico inició sesión. IP: 127.0.0.1
+2024-12-09 20:08:33,496 - INFO - Permisos de /home/federico/org.txt cambiados a 0755.
+2024-12-09 20:08:37,062 - INFO - Usuario federico salió de la sesión.
+2024-12-09 20:08:48,120 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 20:56:16,149 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 20:56:40,080 - ERROR - Error al cambiar de directorio: name 'validar_permisos' is not defined
+2024-12-09 20:58:20,509 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 20:58:43,721 - INFO - Permisos de /home/enzo/archivos_enzo cambiados a 0777.
+2024-12-09 20:59:03,460 - ERROR - Error al cambiar de directorio: name 'validar_permisos' is not defined
+2024-12-09 21:00:55,468 - ERROR - Error al procesar el comando vim: name 'validar_permisos' is not defined
+2024-12-09 21:04:32,760 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 21:18:16,571 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 21:18:28,062 - ERROR - Error al cambiar de directorio: name 'validar_permisos' is not defined
+2024-12-09 21:21:29,451 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 21:23:56,839 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 21:24:04,264 - ERROR - Error al cambiar de directorio: name 'validar_permisos' is not defined
+2024-12-09 21:24:21,260 - ERROR - Error al cambiar de directorio: name 'validar_permisos' is not defined
+2024-12-09 21:24:25,948 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 21:30:34,259 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 21:30:42,296 - INFO - Directorio cambiado a: /home/enzo
+2024-12-09 21:30:55,554 - ERROR - Error al procesar el comando vim: name 'current_user' is not defined
+2024-12-09 21:31:20,314 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 21:34:21,747 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 21:34:26,602 - INFO - Directorio cambiado a: /home/enzo
+2024-12-09 21:34:31,471 - ERROR - Error al procesar el comando vim: name 'current_user' is not defined
+2024-12-09 21:34:40,477 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 21:39:21,120 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 21:39:30,355 - INFO - Directorio cambiado a: /home/enzo
+2024-12-09 21:39:36,428 - ERROR - Error al procesar el comando vim: name 'current_user' is not defined
+2024-12-09 21:39:45,910 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 21:43:49,889 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 21:43:55,890 - INFO - Directorio cambiado a: /home/enzo
+2024-12-09 21:44:03,409 - ERROR - Error al procesar el comando vim: name 'current_user' is not defined
+2024-12-09 21:44:06,702 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 21:50:17,717 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 21:50:23,527 - INFO - Directorio cambiado a: /home/enzo
+2024-12-09 21:50:35,084 - ERROR - Error al procesar el comando vim: name 'current_user' is not defined
+2024-12-09 21:50:50,129 - ERROR - Error al procesar el comando vim: name 'current_user' is not defined
+2024-12-09 21:50:57,284 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 22:01:31,828 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 22:01:44,661 - INFO - Directorio cambiado a: /home/enzo
+2024-12-09 22:01:50,834 - INFO - Listados contenidos de /home/enzo
+2024-12-09 22:02:12,583 - ERROR - Error al procesar el comando vim: name 'current_user' is not defined
+2024-12-09 22:02:27,470 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 22:07:17,318 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-09 22:07:32,817 - INFO - Directorio cambiado a: /home/enzo
+2024-12-09 22:07:44,714 - ERROR - Error al cambiar de directorio: name 'current_user' is not defined
+2024-12-09 22:08:02,832 - INFO - Listados contenidos de /home/enzo
+2024-12-09 22:08:20,234 - INFO - Directorio cambiado a: /home/enzo/archivos_enzo
+2024-12-09 22:08:35,296 - INFO - Listados contenidos de /home/enzo/archivos_enzo
+2024-12-09 22:09:46,885 - ERROR - El archivo o directorio /home/enzo/archivos_enzo/erico.txt no existe.
+2024-12-09 22:10:13,244 - INFO - Listados contenidos de /home/enzo/archivos_enzo
+2024-12-09 22:10:47,335 - INFO - Permisos de /home/enzo/archivos_enzo/erico cambiados a 0700.
+2024-12-09 22:10:50,155 - INFO - Usuario enzo salió de la sesión.
+2024-12-09 22:11:10,825 - INFO - Usuario federico inició sesión. IP: 127.0.0.1
+2024-12-09 22:12:40,058 - INFO - Se copió archivo de /home/enzo/archivos_enzo/erico a /home/federico/prueba2
+2024-12-09 22:13:25,259 - INFO - Usuario federico salió de la sesión.
+2024-12-10 08:35:52,646 - INFO - Usuario enzo inició sesión. IP: 127.0.0.1
+2024-12-10 08:35:58,998 - INFO - Usuario enzo salió de la sesión.
+2024-12-10 10:27:27,857 - ERROR - Error al agregar usuario enzo: [Errno 2] No such file or directory: 'sudo'
+2024-12-10 10:34:56,029 - ERROR - Error al agregar usuario enzo: Command '['su', 'useradd', '-m', '-s', '/bin/bash', 'enzo']' returned non-zero exit status 1.
+2024-12-10 10:39:54,855 - INFO - Usuario enmafu inició sesión. IP: 127.0.0.1
+2024-12-10 10:40:41,041 - INFO - Usuario enmafu salió de la sesión.
+2024-12-10 11:05:08,831 - INFO - Usuario enmafu inició sesión. IP: 127.0.0.1
+2024-12-10 11:05:12,724 - INFO - Usuario enmafu salió de la sesión.
+2024-12-10 11:17:47,463 - INFO - Usuario enmafu inició sesión. IP: 127.0.0.1
+2024-12-10 11:17:50,268 - INFO - Usuario enmafu salió de la sesión.
