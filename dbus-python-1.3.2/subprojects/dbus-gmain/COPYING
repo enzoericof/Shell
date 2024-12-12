@@ -1,0 +1,7 @@
+The D-Bus GLib main loop bindings are licensed to you under your choice
+of the Academic Free License version 2.1, or the GNU General Public
+License version 2. Both licenses are available in the LICENSES directory.
+
+This project's licensing is REUSE-compliant <https://reuse.software/>.
+See individual files for full details of copyright and licensing,
+and see LICENSES/*.txt for the license text.

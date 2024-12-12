@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.freedesktop.DBus.TestSuiteEchoService
+Exec=/root/Shell-main/LFS-Shell/dbus-1.14.10/test/test-service

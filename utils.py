@@ -19,12 +19,14 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+# Logs normales
 def log_action(message):
     """
     Registra acciones normales del shell en el log principal.
     """
     logging.info(message)
 
+# Logs de errores
 def log_error(message):
     """
     Registra errores en el archivo sistema_error.log y también en el log principal.
@@ -33,6 +35,7 @@ def log_error(message):
     with open(LOG_ERROR, "a") as error_log:
         error_log.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - ERROR - {message}\n")
 
+# Logs cuando un usuario ingresa fuera de sus horarios permitidos
 def log_horario_fuera_de_rango(usuario, ip):
     """
     Registra accesos fuera del horario permitido en el log usuario_horarios_log.log.
@@ -40,6 +43,7 @@ def log_horario_fuera_de_rango(usuario, ip):
     with open(LOG_HORARIOS, "a") as horario_log:
         horario_log.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - FUERA DE HORARIO - Usuario: {usuario}, IP: {ip}\n")
 
+# Logs cuando ocurren transferencias
 def log_transferencia(tipo, archivo, destino):
     """
     Registra transferencias (ftp/scp) en el archivo shell_transferencias.log.

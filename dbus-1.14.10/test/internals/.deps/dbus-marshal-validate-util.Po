@@ -1,0 +1,12 @@
+internals/dbus-marshal-validate-util.o: \
+ internals/dbus-marshal-validate-util.c /usr/include/stdc-predef.h \
+ ../config.h internals/misc-internals.h ../dbus/dbus-types.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/14.2.0/include/stddef.h \
+ ../dbus/dbus-arch-deps.h ../dbus/dbus-macros.h
+/usr/include/stdc-predef.h:
+../config.h:
+internals/misc-internals.h:
+../dbus/dbus-types.h:
+/usr/lib/gcc/x86_64-pc-linux-gnu/14.2.0/include/stddef.h:
+../dbus/dbus-arch-deps.h:
+../dbus/dbus-macros.h:

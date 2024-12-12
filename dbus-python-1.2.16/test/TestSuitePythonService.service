@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.freedesktop.DBus.TestSuitePythonService
+Exec=/bin/bash -c "/usr/bin/python /root/Shell-main/LFS-Shell/dbus-python-1.2.16/test/test-service.py"
