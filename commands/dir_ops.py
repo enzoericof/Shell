@@ -1,4 +1,5 @@
 import os
+import subprocess
 from utils import log_action, log_error
 
 def listar(directorio):
@@ -7,9 +8,9 @@ def listar(directorio):
     """
     try:
         contenidos = os.listdir(directorio)
-        log_action(f"Listados contenidos de {directorio}")
+        log_action(f"Listado de contenidos de {directorio}")
 
-        print(f"Contenido de {directorio}:")
+        print(f"Este es el listado de contenidos de {directorio}:")
         for item in contenidos:
             print(f"- {item}")
 
@@ -20,14 +21,20 @@ def listar(directorio):
         log_error(mensaje)
         return []
 
-def crear_directorio(directorio):
+def crear_directorio(directorio, usuario):
     """
-    Crea un nuevo directorio.
+    Crea un nuevo directorio y cambia su propiedad al usuario especificado.
     """
     try:
+        # Crear el directorio
         os.makedirs(directorio, exist_ok=True)
-        mensaje = f"Creado directorio {directorio}"
+        mensaje = f"Se creó el directorio: {directorio}"
         print(mensaje)
+        
+        # Cambiar la propiedad del directorio al usuario
+        subprocess.run(['chown', f'{usuario}:{usuario}', directorio], check=True)
+        print(f"Propiedad cambiada a {usuario} para el directorio: {directorio}")
+
         log_action(mensaje)
     except Exception as e:
         mensaje = f"Error al crear directorio {directorio}: {e}"
@@ -41,7 +48,7 @@ def ir(nuevo_directorio):
     """
     try:
         os.chdir(nuevo_directorio)
-        mensaje = f"Directorio cambiado a: {os.getcwd()}"
+        mensaje = f"Se cambió al directorio: {os.getcwd()}"
         print(mensaje)
         log_action(mensaje)
     except FileNotFoundError:

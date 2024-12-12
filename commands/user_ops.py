@@ -10,29 +10,24 @@ from datetime import datetime
 from utils import log_action, log_error, log_horario_fuera_de_rango
 
 USER_DATA_FILE = "/root/Shell-main/LFS-Shell/users/user_data.json"
-USER_UID_MAP = "/root/Shell-main/LFS-Shell/users/user_uid.json"
 
-def obtener_uid(usuario):
-    return USER_UID_MAP.get(usuario)
+"""FUNCIONES RELACIONADAS CON USUARIOS"""
 
+# Agrega un usuario al sistema real y a un sistema simulado
 def agregar_usuario(nombre, contrasena, verificar_contrasena, datos_personales, ips_permitidas):
     try:
         if contrasena != verificar_contrasena:
             raise ValueError("Las contraseñas no coinciden.")
-
         # Verificar si el usuario ya existe en el sistema real
         try:
             pwd.getpwnam(nombre)
             raise ValueError(f"El usuario {nombre} ya existe en el sistema.")
         except KeyError:
             pass  # El usuario no existe, podemos crearlo
-
         # Crear usuario en el sistema real (como root)
         subprocess.run(['useradd', '-m', '-s', '/bin/bash', nombre], check=True)
-
         # Cambiar la contraseña del usuario
         subprocess.run(['chpasswd'], input=f"{nombre}:{contrasena}".encode(), check=True)
-
         # Configurar datos adicionales en el archivo JSON
         usuarios = cargar_datos_usuarios()
         usuarios[nombre] = {
@@ -41,12 +36,12 @@ def agregar_usuario(nombre, contrasena, verificar_contrasena, datos_personales, 
             "ips_permitidas": ips_permitidas,
         }
         guardar_datos_usuarios(usuarios)
-
         print(f"Usuario {nombre} agregado con éxito.")
     except Exception as e:
         log_error(f"Error al agregar usuario {nombre}: {e}")
         print(f"Error: {e}")
 
+# Verifica si el usuario y la contraseña son correctas
 def validar_credenciales(username, password):
     try:
         # Verifica si el usuario existe
@@ -55,11 +50,9 @@ def validar_credenciales(username, password):
         except KeyError:
             print(f"Usuario {username} no encontrado en el sistema.")
             return False
-
         # Obtén la contraseña cifrada desde /etc/shadow
         shadow_entry = spwd.getspnam(username)
         hashed_password = shadow_entry.sp_pwdp
-
         # Compara la contraseña ingresada con la cifrada
         if crypt.crypt(password, hashed_password) == hashed_password:
             print(f"Credenciales de {username} verificadas correctamente ")
@@ -67,7 +60,6 @@ def validar_credenciales(username, password):
         else:
             print("Credenciales incorrectas.")
             return False
-
     except PermissionError:
         print("Este script debe ejecutarse con privilegios de superusuario para acceder a /etc/shadow.")
         return False
@@ -75,14 +67,13 @@ def validar_credenciales(username, password):
         print(f"Error inesperado: {e}")
         return False
 
-
+# Carga en un Json usuarios simulados
 def guardar_datos_usuarios(usuarios):
-    """Guarda los datos de los usuarios en un archivo JSON."""
     with open(USER_DATA_FILE, "w") as file:
         json.dump(usuarios, file)
 
+# Solicita IPs que son permitidas a la hora de registrar un usuario
 def solicitar_ips():
-    """Solicitar al usuario las IPs permitidas."""
     ips = []
     print("Ingrese las IPs permitidas para este usuario. Escriba 'done' para finalizar:")
     while True:
@@ -92,11 +83,8 @@ def solicitar_ips():
         ips.append(ip)
     return ips
 
-
+# Verifica si el usuario está iniciando sesión en horario permitido
 def es_horario_permitido(username, horario_actual):
-    """
-    Verifica si el horario actual está dentro del rango permitido para el usuario.
-    """
     try:
         with open(USER_DATA_FILE, "r") as f:
             usuarios = json.load(f)
@@ -109,27 +97,24 @@ def es_horario_permitido(username, horario_actual):
         log_error(f"Error al verificar horario para {username}: {e}")
     return False
 
+# Carga datos desde un Json de usuarios simulados
 def cargar_datos_usuarios():
-    """Carga los datos de los usuarios desde un archivo JSON."""
     if not os.path.exists(USER_DATA_FILE):
         return {}
     with open(USER_DATA_FILE, "r") as file:
         return json.load(file)
 
-import subprocess
-
+# Cambia contraseña en el sistema a usuarios
 def cambiar_contrasena(usuario, contrasena_actual, nueva_contrasena, verificar_nueva_contrasena):
     try:
         # Validar que las nuevas contraseñas coincidan
         if nueva_contrasena != verificar_nueva_contrasena:
             print("Error: Las nuevas contraseñas no coinciden.")
             return
-
         # Validar las credenciales actuales
         if not validar_credenciales(usuario, contrasena_actual):
             print("Error: La contraseña actual es incorrecta.")
             return
-
         # Usar chpasswd para cambiar la contraseña
         comando = f"{usuario}:{nueva_contrasena}"
         subprocess.run(
@@ -137,15 +122,13 @@ def cambiar_contrasena(usuario, contrasena_actual, nueva_contrasena, verificar_n
             input=comando.encode(),  # Convertir el comando a bytes
             check=True  # Asegurarse de que el comando se ejecute correctamente
         )
-
         print(f"Contraseña cambiada con éxito para el usuario {usuario}.")
-
     except subprocess.CalledProcessError as e:
         print(f"Error al cambiar la contraseña: {e}")
     except Exception as e:
         print(f"Error inesperado: {str(e)}")
 
-
+# Esta función NO se implementa
 def validar_acceso(usuario, contrasena):
     usuarios = cargar_datos_usuarios()
     print(f"Usuarios cargados: {usuarios}")
@@ -177,7 +160,7 @@ def validar_acceso(usuario, contrasena):
 
     return permitido and ip_permitida, ip_actual
 
-
+# Verifica si la IP desde la cual se ingresa es permitida
 def es_ip_permitida(username, ip_actual):
     """
     Verifica si la IP actual está dentro de las IPs permitidas para el usuario.
