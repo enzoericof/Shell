@@ -12,7 +12,7 @@ from datetime import datetime
 from commands.file_ops import copiar, mover, renombrar, cambiar_propietario, cambiar_permisos, validar_permisos, comando_vim, configurar_directorio_usuario, monitorear_directorio
 from commands.dir_ops import listar, crear_directorio, ir
 from commands.user_ops import agregar_usuario, cambiar_contrasena, validar_acceso,es_ip_permitida, es_horario_permitido, validar_credenciales, solicitar_ips 
-from commands.service_ops import iniciar_servicio, detener_servicio
+from commands.service_ops import iniciar_servicio, detener_servicio, transferencia_scp
 from utils import log_action, log_error, log_horario_fuera_de_rango
 
 LOG_DIR = "/root/Shell-main/LFS-Shell/logs"
@@ -206,6 +206,16 @@ def main():
                     print("Error: Formato incorrecto. Usa 'servicio iniciar|detener <service_name>'.")
                 except Exception as e:
                     log_error(f"Error al manejar servicio: {str(e)}")
+            
+            elif command.startswith("transferencia"):
+                try:
+                    _, archivo_origen, servidor_destino, archivo_destino = command.split()
+                    transferencia_scp(archivo_origen, servidor_destino, archivo_destino)
+                except ValueError:
+                    print("Error: Formato incorrecto. Usa 'transferencia <archivo_origen> <servidor_destino> <archivo_destino>'.")
+                except Exception as e:
+                    log_error(f"Error al manejar transferencia: {str(e)}")
+
             else:
                 os.system(command)
         except Exception as e:
